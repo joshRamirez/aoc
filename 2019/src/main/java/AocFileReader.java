@@ -7,6 +7,7 @@ public class AocFileReader {
 
     /**
      * reads a file where there is 1 independent data point per line
+     *
      * @param fileName name of the file to be used
      * @return list of values
      */
@@ -30,6 +31,7 @@ public class AocFileReader {
 
     /**
      * reads a file where all the data points are in a single line and are comma separated values
+     *
      * @param fileName name of the file to be used
      * @return list of values
      */
