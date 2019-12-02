@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -10,7 +11,7 @@ public class Day1RocketEquationTest {
     public void test12() {
         List<String> mockFileResults = new ArrayList();
         mockFileResults.add("12");
-        assertEquals(2, Day1RocketEquation.getRequiredInitialFuel(mockFileResults),0);
+        assertEquals(2, Day1RocketEquation.getRequiredInitialFuel(mockFileResults), 0);
     }
 
     @Test
@@ -24,14 +25,14 @@ public class Day1RocketEquationTest {
     public void test1969() {
         List<String> mockFileResults = new ArrayList();
         mockFileResults.add("1969");
-        assertEquals(654, Day1RocketEquation.getRequiredInitialFuel(mockFileResults),0);
+        assertEquals(654, Day1RocketEquation.getRequiredInitialFuel(mockFileResults), 0);
     }
 
     @Test
     public void test100756() {
         List<String> mockFileResults = new ArrayList();
         mockFileResults.add("100756");
-        assertEquals(33583, Day1RocketEquation.getRequiredInitialFuel(mockFileResults),0);
+        assertEquals(33583, Day1RocketEquation.getRequiredInitialFuel(mockFileResults), 0);
     }
 
     @Test
@@ -41,13 +42,13 @@ public class Day1RocketEquationTest {
         mockFileResults.add("14");
         mockFileResults.add("1969");
         mockFileResults.add("100756");
-        assertEquals((2+2+654+33583), Day1RocketEquation.getRequiredInitialFuel(mockFileResults), 0);
+        assertEquals((2 + 2 + 654 + 33583), Day1RocketEquation.getRequiredInitialFuel(mockFileResults), 0);
     }
 
     @Test
     public void testPart1() {
         List<String> fileResults = AocFileReader.readFile("src/main/resources/Day1Data.txt");
-        assertEquals(3303995, Day1RocketEquation.getRequiredInitialFuel(fileResults),0);
+        assertEquals(3303995, Day1RocketEquation.getRequiredInitialFuel(fileResults), 0);
     }
 
     @Test

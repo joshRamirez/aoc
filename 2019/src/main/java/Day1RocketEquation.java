@@ -3,12 +3,13 @@ import java.util.List;
 public class Day1RocketEquation {
     /**
      * Part 1 function, which gathers the initial fuel required based on the masses provided.
+     *
      * @param masses all the masses to be used for the calculation of required fuel
      * @return weight in fuel required
      */
     public static Integer getRequiredInitialFuel(List<String> masses) {
         Integer sum = 0;
-        for(String mass: masses) {
+        for (String mass : masses) {
             Integer massAsInt = Integer.parseInt(mass);
             sum += getFuel(massAsInt);
         }
@@ -18,16 +19,18 @@ public class Day1RocketEquation {
 
     // TODO(JOSH): the above and below functions may be able to be made into a single function? The only difference is
     //  the function call.
+
     /**
      * Part 2 function, which now needs to include the fuel weight recursively until each module requires 0 new fuel
+     *
      * @param masses all the masses to be used for the calculation of required fuel
      * @return weight in fuel required
      */
     public static Integer getRequiredTotalFuel(List<String> masses) {
         Integer sum = 0;
-        for(String mass: masses) {
+        for (String mass : masses) {
             Integer massAsInt = Integer.parseInt(mass);
-            sum += getRequiredExtraFuel(massAsInt,0);
+            sum += getRequiredExtraFuel(massAsInt, 0);
         }
 
         return sum;
@@ -38,8 +41,9 @@ public class Day1RocketEquation {
      * the following constraint:
      * 'So, for each module mass, calculate its fuel and add it to the total. Then, treat the fuel amount you just
      * calculated as the input mass and repeat the process, continuing until a fuel requirement is zero or negative.'
+     *
      * @param newMass mass being passed in to evaluate the fuel needed
-     * @param fuel accumulated fuel
+     * @param fuel    accumulated fuel
      * @return the total fuel weight requirement for the module
      */
     public static Integer getRequiredExtraFuel(Integer newMass, Integer fuel) {
