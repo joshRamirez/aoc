@@ -53,7 +53,7 @@ public class Day2IntcodeTest {
 
     @Test
     public void testPart1() {
-        List<String> instructions = AocFileReader.readList("src/mian/resources/Day2Data.txt");
-        assertEquals(0, Day2Intcode.getIntcode(instructions),0);
+        List<String> instructions = AocFileReader.readList("src/main/resources/Day2Data.txt");
+        assertEquals(7210630, Day2Intcode.getIntcode(instructions), 0);
     }
 }
