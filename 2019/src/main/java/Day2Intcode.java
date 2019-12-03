@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Day2Intcode {
@@ -12,6 +14,36 @@ public class Day2Intcode {
         for (int i = 0; i < instructions.size(); i += 4) {
             if (calculateInstruction(instructions, i) == true) {
                 continue;
+            }
+        }
+
+        return Integer.parseInt(instructions.get(0));
+    }
+
+    /**
+     * Finds verb/noun that when placed in the instruction set yields 19690720 as the result of the program
+     *
+     * @param instructions list of instructions and values to be evaluated
+     * @return the result of 100 * noun + verb for the result that yielded 19690720
+     */
+    public static Integer getIntcodeFor19690720(List<String> instructions) {
+        List<String> original = new ArrayList();
+        instructions.stream().forEach(it -> original.add(it));
+
+        for (int i = 0; i < instructions.size(); i++) {
+            for (int j = i; j < instructions.size(); j++) {
+                instructions.set(1, String.valueOf(i));
+                instructions.set(2, String.valueOf(j));
+
+                for (int k = 0; k < instructions.size(); k += 4) {
+                    calculateInstruction(instructions, k);
+                }
+
+                if (Integer.parseInt(instructions.get(0)) == 19690720) {
+                    return 100 * Integer.parseInt(instructions.get(1)) + Integer.parseInt(instructions.get(2));
+                } else {
+                    Collections.copy(instructions, original);
+                }
             }
         }
 
@@ -37,6 +69,9 @@ public class Day2Intcode {
             int addend2 = Integer.parseInt(instructions.get(position2));
             int sum = addend1 + addend2;
             int position3 = Integer.parseInt(instructions.get(instructionPosition + 3));
+            if (position3 > instructions.size()) {
+                return true;
+            }
             instructions.set(position3, String.valueOf(sum));
             return false;
         } else if (instruction == 2) {
@@ -46,6 +81,9 @@ public class Day2Intcode {
             int y = Integer.parseInt(instructions.get(position2));
             int mult = x * y;
             int position3 = Integer.parseInt(instructions.get(instructionPosition + 3));
+            if (position3 > instructions.size()) {
+                return true;
+            }
             instructions.set(position3, String.valueOf(mult));
             return false;
         }
