@@ -26,4 +26,10 @@ public class Day3CrossedWiresTest {
         mockPaths.add(mockPath1);
         assertEquals(135, Day3CrossedWires.getClosestCross(mockPaths));
     }
+
+    @Test
+    public void testClosestWiresPart1() {
+        List<List<String>> paths = AocFileReader.readList("src/main/resources/Day3Data.txt");
+        assertEquals(709, Day3CrossedWires.getClosestCross(paths));
+    }
 }
