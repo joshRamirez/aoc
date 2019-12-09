@@ -1,16 +1,29 @@
 public class Day4SecureContainer {
-    //aoc input 372304-847060
+    /**
+     * Grabs all valid passwords within the given range.
+     *
+     * @param lowEnd  low end of the range
+     * @param highEnd high end of the range
+     * @return the count of valid passwords
+     */
+    public static int getValidPasswords(int lowEnd, int highEnd) {
+        int validPasswords = 0;
 
-    public static int getValidPassword() {
-        return 0;
+        for (int i = lowEnd; i <= highEnd; i++) {
+            if (validatePassword(i)) {
+                validPasswords++;
+            }
+        }
+
+        return validPasswords;
     }
 
     /**
      * This method will validate a password based on the constraints provided by aoc.
-     * It is a six-digit number.
-     *     The value is within the range given in your puzzle input.
-     *     Two adjacent digits are the same (like 22 in 122345).
-     *     Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
+     * It is a six-digit number. * assumed true because input will handle this
+     * The value is within the range given in your puzzle input. * assumed true because input will handle this
+     * Two adjacent digits are the same (like 22 in 122345).
+     * Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
      *
      * @param password password to be validated
      * @return true if the password is valid, otherwise false
@@ -46,6 +59,14 @@ public class Day4SecureContainer {
             lastDigit = secondToLastDigit;
             secondToLastDigit = password % 10;
             password = password / 10;
+        }
+
+        if (secondToLastDigit > lastDigit) {
+            return false;
+        }
+
+        if (secondToLastDigit == lastDigit) {
+            hasSimilarAdjacentDigit = true;
         }
 
         if (hasSimilarAdjacentDigit) {
