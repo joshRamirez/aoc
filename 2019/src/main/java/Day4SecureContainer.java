@@ -30,7 +30,6 @@ public class Day4SecureContainer {
 
         for (int i = lowEnd; i <= highEnd; i++) {
             if (validatePasswordPart2(i)) {
-                System.out.println(i);
                 validPasswords++;
             }
         }

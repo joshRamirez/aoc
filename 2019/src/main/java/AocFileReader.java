@@ -35,18 +35,19 @@ public class AocFileReader {
      * @param fileName name of the file to be used
      * @return list of values
      */
-    public static List<String> readList(String fileName) {
-        List<String> results = new ArrayList();
+    public static List<List<String>> readList(String fileName) {
+        List<List<String>> results = new ArrayList();
         File file = new File(fileName);
         BufferedReader br;
 
         try {
             br = new BufferedReader(new FileReader(file));
-            String result = br.readLine();
-            if (result != null) {
+            String result;
+            while ((result = br.readLine()) != null){
                 String[] data = result.split(",");
-                results = Arrays.asList(data);
+                results.add(Arrays.asList(data));
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
