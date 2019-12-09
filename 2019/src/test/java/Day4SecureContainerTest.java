@@ -52,4 +52,24 @@ public class Day4SecureContainerTest {
     public void testGetValidPasswords372304to847060() {
         assertEquals(475, Day4SecureContainer.getValidPasswords(372304, 847060));
     }
+
+    @Test
+    public void testValidatePasswordPart2444455() {
+        assertEquals(true, Day4SecureContainer.validatePasswordPart2(444455));
+    }
+
+    @Test
+    public void testValidatePasswordPart2400001() {
+        assertEquals(false, Day4SecureContainer.validatePasswordPart2(400001));
+    }
+
+    @Test
+    public void testGetValidPasswordsPart2111111to111115() {
+        assertEquals(1, Day4SecureContainer.getValidPasswordsPart2(111111, 111122));
+    }
+
+    @Test
+    public void testGetValidPasswordsPart2372304to847060() {
+        assertEquals(297, Day4SecureContainer.getValidPasswordsPart2(372304, 847060));
+    }
 }
