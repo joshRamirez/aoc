@@ -1,4 +1,5 @@
 import model.Instruction;
+import model.InstructionResult;
 
 import java.util.List;
 
@@ -12,47 +13,102 @@ public class Day5Intcode2 {
     public static Integer getIntcode(List<String> instructions, List<String> diagnosticCodes, List<String> input) {
         for (int i = 0; i < instructions.size(); ) {
             Instruction instruction = getInstruction(Integer.parseInt(instructions.get(i)));
-            int step;
+            InstructionResult instructionResult;
 
             if (instruction.getOpcode() == 99) {
                 break;
             } else {
-                step = executeInstruction(instructions, i, instruction, diagnosticCodes, input);
+                instructionResult = executeInstruction(instructions, i, instruction, diagnosticCodes, input);
             }
 
-            i += step;
+            if (instructionResult.isModified()) {
+                i = instructionResult.getPointer();
+            } else {
+                i += instructionResult.getPointer();
+            }
         }
 
         return Integer.parseInt(instructions.get(0));
     }
 
-    public static Integer executeInstruction(List<String> instructions, int pointer, Instruction instruction, List<String> diagnosticCodes, List<String> input) {
+    //Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+    //Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+    //Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
+    //Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
+
+    // TODO(JOSH): make these methods utilities and have day 2 use them along with the new models
+
+    /**
+     * Executes an instruction while mutating instructions and diagnostic codes
+     *
+     * @param instructions    set of instructions
+     * @param pointer         of current instruction
+     * @param instruction     current instruction broken down into opcode and parameters
+     * @param diagnosticCodes mutated list of diagnostic codes that result from opcode 4
+     * @param input           inputs provided by unit ID
+     * @return the amount of steps that the program should skip
+     */
+    public static InstructionResult executeInstruction(List<String> instructions, int pointer, Instruction instruction, List<String> diagnosticCodes, List<String> input) {
         int immediate1 = Integer.parseInt(instructions.get(pointer + 1));
-        int parameter1 = instruction.getParameter1() == 0 ? immediate1 : pointer + 1;
+        int parameter1 = instruction.getMode1() == 0 ? immediate1 : pointer + 1;
         int parameter2 = 0;
         int parameter3 = 0;
 
-        if (instruction.getOpcode() < 3) {
+        if (instruction.getOpcode() < 3
+                || (instruction.getOpcode() == 5 && Integer.parseInt(instructions.get(parameter1)) != 0)
+                || (instruction.getOpcode() == 6 && Integer.parseInt(instructions.get(parameter1)) == 0)
+                || instruction.getOpcode() > 6) {
             int immediate2 = Integer.parseInt(instructions.get(pointer + 2));
-            parameter2 = instruction.getParameter2() == 0 ? immediate2 : pointer + 2;
+            parameter2 = instruction.getMode2() == 0 ? immediate2 : pointer + 2;
+        }
+
+        if (instruction.getOpcode() < 3 || instruction.getOpcode() > 6) {
             int immediate3 = Integer.parseInt(instructions.get(pointer + 3));
-            parameter3 = instruction.getParameter3() == 0 ? immediate3 : pointer + 3;
+            parameter3 = instruction.getMode3() == 0 ? immediate3 : pointer + 3;
         }
 
         if (instruction.getOpcode() == 1) {
             int result = Integer.parseInt(instructions.get(parameter1)) + Integer.parseInt(instructions.get(parameter2));
             instructions.set(parameter3, String.valueOf(result));
-            return 4;
+            return new InstructionResult(false, 4);
         } else if (instruction.getOpcode() == 2) {
             int result = Integer.parseInt(instructions.get(parameter1)) * Integer.parseInt(instructions.get(parameter2));
             instructions.set(parameter3, String.valueOf(result));
-            return 4;
+            return new InstructionResult(false, 4);
         } else if (instruction.getOpcode() == 3) {
             instructions.set(parameter1, input.get(0));
-            return 2;
+            return new InstructionResult(false, 2);
         } else if (instruction.getOpcode() == 4) {
             diagnosticCodes.add(String.valueOf(Integer.parseInt(instructions.get(parameter1))));
-            return 2;
+            return new InstructionResult(false, 2);
+        } else if (instruction.getOpcode() == 5) {
+            if (Integer.parseInt(instructions.get(parameter1)) != 0) {
+                return new InstructionResult(true, Integer.parseInt(instructions.get(parameter2)));
+            } else {
+                return new InstructionResult(false, 3);
+            }
+        } else if (instruction.getOpcode() == 6) {
+            if (Integer.parseInt(instructions.get(parameter1)) == 0) {
+                return new InstructionResult(true, Integer.parseInt(instructions.get(parameter2)));
+            } else {
+                return new InstructionResult(false, 3);
+            }
+        } else if (instruction.getOpcode() == 7) {
+            boolean result = Integer.parseInt(instructions.get(parameter1)) < Integer.parseInt(instructions.get(parameter2));
+            if (result) {
+                instructions.set(parameter3, "1");
+            } else {
+                instructions.set(parameter3, "0");
+            }
+            return new InstructionResult(false, 4);
+        } else if (instruction.getOpcode() == 8) {
+            boolean result = Integer.parseInt(instructions.get(parameter1)) == Integer.parseInt(instructions.get(parameter2));
+            if (result) {
+                instructions.set(parameter3, "1");
+            } else {
+                instructions.set(parameter3, "0");
+            }
+            return new InstructionResult(false, 4);
         }
 
         return null;

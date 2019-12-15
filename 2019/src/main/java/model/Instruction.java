@@ -2,19 +2,19 @@ package model;
 
 public class Instruction {
     private int opcode;
-    private int parameter1;
-    private int parameter2;
-    private int parameter3;
+    private int mode1;
+    private int mode2;
+    private int mode3;
 
     // default constructor
     public Instruction() {
     }
 
-    public Instruction(int opcode, int parameter1, int parameter2, int parameter3) {
+    public Instruction(int opcode, int mode1, int mode2, int mode3) {
         this.opcode = opcode;
-        this.parameter1 = parameter1;
-        this.parameter2 = parameter2;
-        this.parameter3 = parameter3;
+        this.mode1 = mode1;
+        this.mode2 = mode2;
+        this.mode3 = mode3;
     }
 
     public int getOpcode() {
@@ -25,41 +25,46 @@ public class Instruction {
         this.opcode = opcode;
     }
 
-    public int getParameter1() {
-        return parameter1;
+    public int getMode1() {
+        return mode1;
     }
 
-    public void setParameter1(int parameter1) {
-        this.parameter1 = parameter1;
+    public void setMode1(int mode1) {
+        this.mode1 = mode1;
     }
 
-    public int getParameter2() {
-        return parameter2;
+    public int getMode2() {
+        return mode2;
     }
 
-    public void setParameter2(int parameter2) {
-        this.parameter2 = parameter2;
+    public void setMode2(int mode2) {
+        this.mode2 = mode2;
     }
 
-    public int getParameter3() {
-        return parameter3;
+    public int getMode3() {
+        return mode3;
     }
 
-    public void setParameter3(int parameter3) {
-        this.parameter3 = parameter3;
+    public void setMode3(int mode3) {
+        this.mode3 = mode3;
     }
 
     @Override
     public boolean equals(Object instruction) {
         if (instruction instanceof Instruction) {
             if (this.opcode == ((Instruction) instruction).opcode
-                    && this.parameter1 == ((Instruction) instruction).parameter1
-                    && this.parameter2 == ((Instruction) instruction).parameter2
-                    && this.parameter3 == ((Instruction) instruction).parameter3) {
+                    && this.mode1 == ((Instruction) instruction).mode1
+                    && this.mode2 == ((Instruction) instruction).mode2
+                    && this.mode3 == ((Instruction) instruction).mode3) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "(" + this.opcode + ", " + this.mode1 + ", " + this.mode2 + ", " + this.mode3 + ")";
     }
 }
