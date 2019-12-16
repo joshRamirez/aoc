@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import util.AocFileReader;
 
 import static org.junit.Assert.assertEquals;
 
