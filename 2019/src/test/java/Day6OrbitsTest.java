@@ -3,7 +3,6 @@ import com.google.common.graph.MutableGraph;
 import org.junit.Test;
 import util.AocFileReader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -26,6 +25,8 @@ public class Day6OrbitsTest {
         expectedDirectedOrbitGraph.addNode("J");
         expectedDirectedOrbitGraph.addNode("K");
         expectedDirectedOrbitGraph.addNode("L");
+        expectedDirectedOrbitGraph.addNode("YOU");
+        expectedDirectedOrbitGraph.addNode("SAN");
         expectedDirectedOrbitGraph.putEdge("COM", "B");
         expectedDirectedOrbitGraph.putEdge("B", "C");
         expectedDirectedOrbitGraph.putEdge("C", "D");
@@ -37,6 +38,8 @@ public class Day6OrbitsTest {
         expectedDirectedOrbitGraph.putEdge("E", "J");
         expectedDirectedOrbitGraph.putEdge("J", "K");
         expectedDirectedOrbitGraph.putEdge("K", "L");
+        expectedDirectedOrbitGraph.putEdge("K", "YOU");
+        expectedDirectedOrbitGraph.putEdge("I", "SAN");
 
         assertEquals(expectedDirectedOrbitGraph, Day6Orbits.convertMapToOrbit(mockOrbitMap));
     }
@@ -45,7 +48,7 @@ public class Day6OrbitsTest {
     public void testChecksumSample() {
         List<String> mockOrbitMap = AocFileReader.readFile("src/main/resources/Day6DataSample.txt");
 
-        assertEquals(42, Day6Orbits.checksum(mockOrbitMap));
+        assertEquals(54, Day6Orbits.checksum(mockOrbitMap));
     }
 
     @Test
@@ -53,5 +56,19 @@ public class Day6OrbitsTest {
         List<String> mockOrbitMap = AocFileReader.readFile("src/main/resources/Day6Data.txt");
 
         assertEquals(245089, Day6Orbits.checksum(mockOrbitMap));
+    }
+
+    @Test
+    public void testGetMinimumOrbitalTransfersSample() {
+        List<String> mockOrbitMap = AocFileReader.readFile("src/main/resources/Day6DataSample.txt");
+
+        assertEquals(4, Day6Orbits.getMinimumOrbitalTransfers(mockOrbitMap, "YOU", "SAN"));
+    }
+
+    @Test
+    public void testGetMinimumOrbitalTransfers() {
+        List<String> mockOrbitMap = AocFileReader.readFile("src/main/resources/Day6Data.txt");
+
+        assertEquals(511, Day6Orbits.getMinimumOrbitalTransfers(mockOrbitMap, "YOU", "SAN"));
     }
 }

@@ -6,13 +6,48 @@ import java.util.*;
 
 public class Day6Orbits {
     public static int checksum(List<String> orbitMap) {
-        MutableGraph<String> orbits = convertMapToOrbit(orbitMap);
-        return calculateOrbits(orbits);
+        MutableGraph<String> orbitsGraph = convertMapToOrbit(orbitMap);
+        return calculateOrbits(orbitsGraph);
+    }
+
+    public static int getMinimumOrbitalTransfers(List<String> orbitMap, String start, String end) {
+        MutableGraph<String> orbitsGraph = convertMapToOrbit(orbitMap);
+        Integer[] distance = new Integer[1];
+        calculateMinimumOrbitalTransfers(orbitsGraph, start, end, 0, new HashSet<>(), distance);
+        return distance[0];
+    }
+
+    private static void calculateMinimumOrbitalTransfers(MutableGraph<String> orbitsGraph, String current, String end, Integer count, Set<String> visited, Integer[] distance) {
+        if (current.equals(end)) {
+            distance[0] = count - 2;
+        }
+
+        visited.add(current);
+        if (!orbitsGraph.predecessors(current).isEmpty() || !orbitsGraph.successors(current).isEmpty()) {
+            for (String node : orbitsGraph.adjacentNodes(current)) {
+                if (!visited.contains(node)) {
+                    calculateMinimumOrbitalTransfers(orbitsGraph, node, end, count + 1, visited, distance);
+                }
+            }
+        }
     }
 
     private static Integer calculateOrbits(MutableGraph<String> orbitsGraph) {
-        List<String> orbits = new LinkedList<>();
+        List<String> orbits = getOrbits(orbitsGraph);
         Map<String, Integer> bodyOrbits = new HashMap<>();
+
+        return calculateOrbits(orbitsGraph, orbits, bodyOrbits, null, -1);
+    }
+
+    private static List<String> getOrbits(MutableGraph<String> orbitsGraph) {
+        List<String> orbits = new LinkedList<>();
+        Object root = getRoot(orbitsGraph);
+        Traverser.forGraph(orbitsGraph).depthFirstPreOrder((String) root).forEach(it -> orbits.add(it));
+
+        return orbits;
+    }
+
+    private static Object getRoot(MutableGraph<String> orbitsGraph) {
         Iterator orbitsIterator = Traverser.forGraph(orbitsGraph).depthFirstPostOrder(orbitsGraph.nodes()).iterator();
         Object root = null;
 
@@ -20,8 +55,7 @@ public class Day6Orbits {
             root = orbitsIterator.next();
         }
 
-        Traverser.forGraph(orbitsGraph).depthFirstPreOrder((String) root).forEach(it -> orbits.add(it));
-        return calculateOrbits(orbitsGraph, orbits, bodyOrbits, null, -1);
+        return root;
     }
 
     private static Integer calculateOrbits(MutableGraph<String> orbitsGraph, List<String> orbits, Map<String, Integer> bodyOrbits, String previousOrbit, Integer totalOrbits) {
