@@ -76,7 +76,7 @@ public class Day5Intcode2 {
             instructions.set(parameter3, String.valueOf(result));
             return new InstructionResult(false, 4);
         } else if (instruction.getOpcode() == 3) {
-            instructions.set(parameter1, input.get(0));
+            instructions.set(parameter1, input.remove(0));
             return new InstructionResult(false, 2);
         } else if (instruction.getOpcode() == 4) {
             diagnosticCodes.add(String.valueOf(Integer.parseInt(instructions.get(parameter1))));

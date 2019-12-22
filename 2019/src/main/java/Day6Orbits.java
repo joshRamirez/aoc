@@ -19,6 +19,7 @@ public class Day6Orbits {
 
     private static void calculateMinimumOrbitalTransfers(MutableGraph<String> orbitsGraph, String current, String end, Integer count, Set<String> visited, Integer[] distance) {
         if (current.equals(end)) {
+            // remove start and end nodes
             distance[0] = count - 2;
         }
 
