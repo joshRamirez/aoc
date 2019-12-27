@@ -1,16 +1,24 @@
+import model.Intcode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.swap;
 
 public class Day7Amplifiers {
-    public static Integer getMaxThrusterSignal(List<String> instructions, List<String> phases) {
+    public static Integer getMaxThrusterSignal(List<List<String>> instructions, List<String> phases) {
         Integer maxThrusterSignal = null;
         List<List<String>> phasePermutations = new ArrayList<>();
         getPermutations(0, phases, phasePermutations);
 
         for (List<String> phase : phasePermutations) {
-            Integer thrusterSignal = calculateThrusterSignal(instructions, phase);
+            List<List<String>> instructionsCopy = new ArrayList<>();
+            for (int i = 0; i < instructions.size(); i++) {
+                instructionsCopy.add(new ArrayList<>(instructions.get(i).size()));
+                int finalI = i;
+                instructions.get(i).stream().forEach(it -> instructionsCopy.get(finalI).add(it));
+            }
+            Integer thrusterSignal = calculateThrusterSignal(instructionsCopy, phase);
             if (maxThrusterSignal != null) {
                 maxThrusterSignal = Math.max(maxThrusterSignal, thrusterSignal);
             } else {
@@ -38,20 +46,29 @@ public class Day7Amplifiers {
         }
     }
 
-    public static Integer calculateThrusterSignal(List<String> instructions, List<String> phaseSettingSequence) {
+    public static Integer calculateThrusterSignal(List<List<String>> instructions, List<String> phaseSettingSequence) {
         List<String> inputs;
-        List<String> diagnosticCode;
-        String output = "0";
-
-        for (int i = 0; i < phaseSettingSequence.size(); i++) {
-            inputs = new ArrayList<>();
-            diagnosticCode = new ArrayList<>();
-            inputs.add(phaseSettingSequence.get(i));
-            inputs.add(output);
-            Day5Intcode2.getIntcode(instructions, diagnosticCode, inputs);
-            output = diagnosticCode.get(0);
+        List<String> diagnosticCode = new ArrayList<>();
+        Integer startSize = phaseSettingSequence.size();
+        diagnosticCode.add("0");
+        List<Intcode> intcodes = new ArrayList<>();
+        for (String ignored : phaseSettingSequence) {
+            intcodes.add(new Intcode());
         }
 
-        return Integer.parseInt(output);
+        do {
+            for (int i = 0; i < startSize; i++) {
+                inputs = new ArrayList<>();
+                if (phaseSettingSequence.size() != 0) {
+                    inputs.add(phaseSettingSequence.remove(0));
+                }
+                while (diagnosticCode.size() != 0) {
+                    inputs.add(diagnosticCode.remove(0));
+                }
+                intcodes.set(i, Day5Intcode2.getIntcode(instructions.get(i), diagnosticCode, inputs, intcodes.get(i)));
+            }
+        } while (intcodes.stream().anyMatch(it -> !it.isTerminated()));
+
+        return Integer.parseInt(diagnosticCode.get(0));
     }
 }

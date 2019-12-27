@@ -1,5 +1,6 @@
 import model.Instruction;
 import model.InstructionResult;
+import model.Intcode;
 import org.junit.Test;
 import util.AocFileReader;
 
@@ -121,7 +122,7 @@ public class Day5Intcode2Test {
         expectedInstructions.add("3");
         expectedInstructions.add("4");
         expectedInstructions.add("99");
-        Day5Intcode2.getIntcode(mockInstructions, new ArrayList<>(), new ArrayList<>());
+        Day5Intcode2.getIntcode(mockInstructions, new ArrayList<>(), new ArrayList<>(), new Intcode());
 
         // validate mockInstructions were properly mutated after the program completed
         assertEquals(expectedInstructions, mockInstructions);
@@ -134,7 +135,7 @@ public class Day5Intcode2Test {
         List<String> inputs = new ArrayList<>();
         inputs.add("1");
         String expectedDiagnosticCode = "16574641";
-        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs);
+        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs, new Intcode());
 
         // this just checks that the answer is correct. In reality it should check that all the values except for the
         // last value are set to 0.
@@ -250,7 +251,7 @@ public class Day5Intcode2Test {
         List<String> inputs = new ArrayList<>();
         inputs.add("1");
         String expectedDiagnosticCode = "999";
-        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs);
+        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs, new Intcode());
 
         // this just checks that the answer is correct. In reality it should check that all the values except for the
         // last value are set to 0.
@@ -264,7 +265,7 @@ public class Day5Intcode2Test {
         List<String> inputs = new ArrayList<>();
         inputs.add("8");
         String expectedDiagnosticCode = "1000";
-        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs);
+        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs, new Intcode());
 
         // this just checks that the answer is correct. In reality it should check that all the values except for the
         // last value are set to 0.
@@ -278,7 +279,7 @@ public class Day5Intcode2Test {
         List<String> inputs = new ArrayList<>();
         inputs.add("10");
         String expectedDiagnosticCode = "1001";
-        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs);
+        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs, new Intcode());
 
         // this just checks that the answer is correct. In reality it should check that all the values except for the
         // last value are set to 0.
@@ -292,7 +293,7 @@ public class Day5Intcode2Test {
         List<String> inputs = new ArrayList<>();
         inputs.add("5");
         String expectedDiagnosticCode = "15163975";
-        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs);
+        Day5Intcode2.getIntcode(instructions.get(0), diagnosticCodes, inputs, new Intcode());
 
         // this just checks that the answer is correct. In reality it should check that all the values except for the
         // last value are set to 0.
